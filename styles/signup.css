@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    background: #fff;
+    padding: 2rem;
+    width: 350px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+    position: relative; /* added so the toggle is positioned relative to this wrapper */
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.6rem;
+    padding-right: 3.2rem; /* added so text doesn't run under the toggle */
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .togglePassword {
+    cursor: pointer;
+    color: #0077ff;
+    font-size: 0.9rem;
+    margin-top: 0;
+    position: absolute;
+    right: 10px;               /* place inside the input at the right */
+    top: 50%;
+    transform: translateY(-2%);
+    user-select: none;
+    z-index: 2;
+
+
+  }
+  .togglePassword:hover {
+    color: #005fcc;
+    text-decoration: underline;
+  }
+  input:focus {
+    border-color: #0077ff;
+  }
+  
+  .error {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #d9534f;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: #0077ff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.5s ease;
+  }
+  
+  .btn:hover {
+    background: #005fcc;
+  }
+.login{
+    margin-top: 1em;
+    font-size: 0.9rem;
+}
