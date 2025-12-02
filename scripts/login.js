@@ -55,4 +55,43 @@ function validatePassword() {
 emailInput.addEventListener("input", validateEmail);
 passwordInput.addEventListener("input", validatePassword);
 
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
+    try {
+        const response = await fetch(
+          "https://scriptures-blog.onrender.com/api/auth/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            mode: "cors",
+            body: JSON.stringify({
+              
+              email: emailInput.value.trim(),
+              password: passwordInput.value.trim()
+            })
+          }
+        );
+    
+        const data = await response.json();
+    
+        // Backend validation errors
+        if (!response.ok) {
+          if (data.field === "email") emailError.textContent = data.message;
+          else if (data.field === "password") passwordError.textContent = data.message;
+          
+          else generalError.textContent = data.message;
+    
+          return;
+        }
+    
+        
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user.username));
+        window.location.replace("dashboard.html");
+    
+      } catch (err) {
+        generalError.textContent = "Network error. Try again.";
+        console.error(err);
+      }
+})

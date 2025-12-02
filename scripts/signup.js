@@ -12,6 +12,9 @@ const generalError = document.querySelector(".generalError");
 
 const form = document.getElementById("form-container");
 
+// spinner
+const signupBtn = document.getElementById("signupBtn");
+
 // --- Basic HTML validation ---
 function validateField(input, errorElement) {
   if (!input.checkValidity()) {
@@ -52,6 +55,29 @@ confirmInput.addEventListener("input", () => {
   validatePasswordMatch();
 });
 
+// Spinner State
+
+
+function startLoading() {
+  signupBtn.classList.add("loading");
+}
+
+function stopLoading() {
+  signupBtn.classList.remove("loading");
+}
+
+// POP UP
+const popup = document.getElementById("signupSuccessPopup");
+const continueBtn = document.getElementById("continueBtn");
+
+function showSuccessPopup() {
+  popup.classList.remove("hidden");
+  setTimeout(() => {
+    popup.classList.add("show");
+  }, 10); 
+}
+
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -71,6 +97,8 @@ form.addEventListener("submit", async (e) => {
   generalError.textContent = "";
 
   try {
+    startLoading();
+
     const response = await fetch(
       "https://scriptures-blog.onrender.com/api/auth/register",
       {
@@ -87,6 +115,8 @@ form.addEventListener("submit", async (e) => {
 
     const data = await response.json();
 
+    stopLoading();
+
     // Backend validation errors
     if (!response.ok) {
       if (data.field === "email") emailError.textContent = data.message;
@@ -99,8 +129,16 @@ form.addEventListener("submit", async (e) => {
 
     
     localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    window.location.replace("dashboard.html");
+    localStorage.setItem("user", JSON.stringify(data.user.username));
+    showSuccessPopup()
+    continueBtn.addEventListener("click", () => {
+      window.location.href = "dashboard.html"; 
+    });
+    
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 5000);
+    
 
   } catch (err) {
     generalError.textContent = "Network error. Try again.";

@@ -8,6 +8,15 @@
 </head>
 
 <body>
+  <!-- Popup -->
+  <div id="signupSuccessPopup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Signup Successful </h3>
+      <p>Your account has been created.</p>
+      <button id="continueBtn">Continue</button>
+    </div>
+  </div>
+
 
   <div class="container">
     <h2>Create Account</h2>
@@ -42,8 +51,16 @@
         <span class="togglePassword">show</span>
         <span class="confirmPasswordError error"></span>
       </div>
+      <!-- <button id="signupBtn" class="loading-btn">
+        
+        
+      </button>
+       -->
 
-      <button type="submit" class="btn">Sign Up</button>
+      <button type="submit" id="signupBtn" class="btn loading-btn">
+        <span class="btn-text">Sign Up</span>
+        <span class="btn-loader"></span>
+      </button>
     </form>
     <p class="login">already have an account? <a href="login.html">login</a></p>
   </div>
