@@ -1,0 +1,97 @@
+/* THEME VARIABLES */
+:root {
+    --bg: #ffffff;
+    --text: #111;
+    --card-bg: #f8f9fa;
+    --btn-bg: #111;
+    --btn-text: #fff;
+}
+
+[data-theme="dark"] {
+    --bg: #0d1117;
+    --text: #e6edf3;
+    --card-bg: #161b22;
+    --btn-bg: #e6edf3;
+    --btn-text: #0d1117;
+}
+
+/* PAGE */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    transition: background 0.3s, color 0.3s;
+}
+
+.allpos {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.post-container h1 {
+    margin-bottom: 20px;
+}
+
+/* POSTS */
+.posts-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.post-body {
+    margin: 10px 0;
+}
+
+.post-author,
+.post-date {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* BUTTONS */
+.comments-btn {
+    padding: 10px 15px;
+    border: none;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.comments-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Theme Toggle Button */
+.theme-btn {
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .post {
+        padding: 15px;
+    }
+    .post-title {
+        font-size: 1.2rem;
+    }
+}
