@@ -4,8 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <script src="https://kit.fontawesome.com/6c2da74d7d.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <nav>
+        <ul class="nav">
+            <div class="first_nav">
+                <div class="home">
+                    <i class="fa-regular fa-house"></i>
+                    <li><a href="dashboard.html">Home</a></li>
+
+                </div>
+                <div class="post-container">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                    <li><a href="post.html">Posts</a></li>
+
+                </div>
+               
+
+            </div>
+            <div class="second_nav">
+                <div class="profile-container">
+                    <i class="fa-regular fa-user"></i>
+                    <li><a href="profile.html">Profile</a></li>
+
+                </div>
+                <div class="logout">
+                    <i class="fa-regular fa-right-from-bracket"></i>
+                    <li><a href="logout.html">Logout</a></li>
+                </div>
+
+            </div>
+            
+            
+           
+        </ul>
+    </nav>
+    <header>
+        <section class="name section1">
+            <div class="username">
+                <h1>Welcome to the Dashboard <span class="current-name"></span></h1>
+                <p>Ready to read and explore from the wisest minds in the world</p>
+                <div class="actions">
+                    <button class="explore">POST <span><i class="fa-solid fa-arrow-right-arrow-left"></i></span></button>
+                    <button>logout</button>
+                </div>
+            </div>
+            <div class="blog-image">
+                <img src='./images/bgimg.avif' alt="blog image">
+            </div>
+            
+
+            
+        </section>
+
+
+    </header>
+
+    <section class="section2">
+       
+            <div class="section2-item">
+                <img src="./images/des.avif" alt="Description image">
+            </div>
+            
+            <div class="section2-item">
+                <h2>Stay updated with the latest Tech news</h2>
+                <p>Explore the latest trends and innovations in technology. From AI advancements to the newest gadgets, stay informed with our curated content.</p>
+            </div>
+        
+    </section>
+    <footer class="main">
+        <div class="footer-content">
+            <p>&copy; <span class="date">2020</span> Blog Dashboard. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
     
+    <script src="scripts/dashboard.js"></script>
 </body>
 </html>
