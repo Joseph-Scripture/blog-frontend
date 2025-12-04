@@ -1,6 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const username = document.querySelector('.current-name');
+    const logout = document.querySelector('.Logout');
 
 const date = document.querySelector('.date')
 
@@ -36,7 +37,10 @@ logoutLink.addEventListener('click', () => {
     profileContainer.addEventListener('click', () => {
         window.location.href = 'profile.html';
     });
-    
+    logout.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+    });
 
    
 });
