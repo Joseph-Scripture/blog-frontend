@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post & Comments</title>
+    <link rel="stylesheet" href="styles/nav.css">
+   <link rel="stylesheet" href="styles/comments.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <ul class="nav">
+        <div class="first_nav">
+            <div class="home">
+                <i class="fa-regular fa-house"></i>
+                <li><a href="dashboard.html">Home</a></li>
+            </div>
+            <div class="post-container">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <li><a href="post.html">Posts</a></li>
+            </div>
+        </div>
+
+        <div class="second_nav">
+            <div class="profile-container">
+                <i class="fa-regular fa-user"></i>
+                <li><a href="profile.html">Profile</a></li>
+            </div>
+            <button id="themeToggle" class="theme-btn">🌙</button>
+        </div>
+    </ul>
+</nav>
+
+<!-- POST SECTION -->
+<section class="comment-section">
+    <div class="post-card" id="post-container">
+       
+    </div>
+
+    <button id="toggle-comments">Show Comments</button>
+    <div class="comments-wrapper" id="comments-wrapper" style="display:none;">
+        <h2>Comments</h2>
+        <div id="comments-container"></div>
+
+        <div class="add-comment">
+            <textarea id="commentInput" placeholder="Write a comment..."></textarea>
+            <button id="submitComment">Post Comment</button>
+        </div>
+    </div>
+</section>
+
+<script src="scripts/comments.js"></script>
+</body>
+</html>

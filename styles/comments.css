@@ -1,0 +1,123 @@
+:root {
+    --bg: #ffffff;
+    --text: #111;
+    --card: #f7f7f7;
+    --border: #ddd;
+    --btn-bg: #111;
+    --btn-text: #fff;
+}
+
+[data-theme="dark"] {
+    --bg: #0d1117;
+    --text: #e6edf3;
+    --card: #161b22;
+    --border: #30363d;
+    --btn-bg: #e6edf3;
+    --btn-text: #0d1117;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    transition: 0.3s;
+}
+
+.comment-section {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.post-card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+}
+
+#toggle-comments {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.comments-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* spacing between comments */
+    margin-top: 15px;
+}
+
+.comments-wrapper h2 {
+    margin-bottom: 10px;
+}
+
+.comment-card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animation for new comment */
+.comment-card.new-comment {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.add-comment {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#commentInput {
+    width: 100%;
+    min-height: 80px;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 10px;
+    resize: vertical;
+}
+
+#submitComment {
+    align-self: flex-end;
+    padding: 10px 15px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#submitComment:hover {
+    background: #333;
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.theme-btn:hover {
+    color: var(--btn-bg);
+}
+
+
+.comment-card {
+    background: var(--card) !important;
+    padding: 35px !important;
+}
