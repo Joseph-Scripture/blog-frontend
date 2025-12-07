@@ -130,6 +130,7 @@ form.addEventListener("submit", async (e) => {
     
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user.username));
+    localStorage.setItem('userId', JSON.stringify(data.user.id))
     showSuccessPopup()
     continueBtn.addEventListener("click", () => {
       window.location.href = "dashboard.html"; 

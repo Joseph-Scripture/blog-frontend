@@ -1,6 +1,6 @@
-// =========================
+// =======================================================
 // DOM Elements
-// =========================
+// =======================================================
 const postContainer = document.getElementById("post-container");
 const commentsWrapper = document.getElementById("comments-wrapper");
 const commentsContainer = document.getElementById("comments-container");
@@ -13,46 +13,44 @@ const themeBtn = document.getElementById("themeToggle");
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("postId");
 
-// =========================
-// Load Post & Comments
-// =========================
+
 async function loadPost() {
     try {
         const token = localStorage.getItem("token");
 
-        // 1️⃣ Fetch single post
-        const resPost = await fetch(`https://scriptures-blog.onrender.com/api/post/${postId}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
-        if (!resPost.ok) throw new Error("Failed to fetch post");
-        const post = await resPost.json();
+        // Fetch Post
+        const postRes = await fetch(
+            `https://scriptures-blog.onrender.com/api/post/${postId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (!postRes.ok) throw new Error("Post fetch error");
+        const post = await postRes.json();
         renderPost(post);
 
-        // 2️⃣ Fetch comments
-        const resComments = await fetch(`https://scriptures-blog.onrender.com/api/posts/${postId}/comments`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
-        if (!resComments.ok) throw new Error("Failed to fetch comments");
-        const comments = await resComments.json();
+        // Fetch Comments
+        const commentsRes = await fetch(
+            `https://scriptures-blog.onrender.com/api/posts/${postId}/comments`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-        renderComments(Array.isArray(comments) ? comments : []);
+        if (!commentsRes.ok) {
+            commentsContainer.innerHTML = "<p>No comments yet.</p>";
+            return;
+        }
 
-    } catch (err) {
-        console.error("Error loading post or comments:", err);
-        postContainer.innerHTML = "<p>Failed to load post.</p>";
-        commentsContainer.innerHTML = "<p>Failed to load comments.</p>";
+        const data = await commentsRes.json();
+        console.log("Received comments:", data.comments);
+        renderComments(data.comments || []);
+
+    } catch (error) {
+        console.error("Load error:", error);
+        postContainer.innerHTML = "<p>Error loading post...</p>";
+        commentsContainer.innerHTML = "<p>Error loading comments...</p>";
     }
 }
 
-// =========================
-// Render Post
-// =========================
+
 function renderPost(post) {
     postContainer.innerHTML = `
         <h1 class="post-title">${post.title}</h1>
@@ -62,55 +60,131 @@ function renderPost(post) {
     `;
 }
 
-// =========================
-// Render Comments
-// =========================
+
 function renderComments(comments) {
     commentsContainer.innerHTML = "";
+    const currentUser = Number(localStorage.getItem("userId"));
 
-    if (!comments || comments.length === 0) {
+    if (comments.length === 0) {
         commentsContainer.innerHTML = "<p>No comments yet.</p>";
         return;
     }
 
     comments.forEach(comment => {
-        appendComment(comment);
+        const commentEl = buildCommentElement(comment, currentUser);
+        commentsContainer.appendChild(commentEl);
     });
+
+    attachActionListeners();
 }
 
-// =========================
-// Append a single comment (with animation)
-// =========================
-function appendComment(comment) {
+
+function buildCommentElement(comment, currentUser) {
     const div = document.createElement("div");
-    div.className = "comment-card new-comment"; // add animation class
-    const username = comment.author?.username || "Anonymous";
+    div.classList.add("comment-card");
+
+    let actions = '';
+    if (comment.authorId === currentUser) {
+        actions = `
+            <div class="comment-actions">
+                <button class="edit-btn" data-id="${comment.id}">Edit</button>
+                <button class="delete-btn" data-id="${comment.id}">Delete</button>
+            </div>
+        `;
+    }
 
     div.innerHTML = `
         <p>${comment.content}</p>
-        <small>— ${username}</small>
+        <small>by ${comment.author.username}</small>
+        ${actions}
     `;
 
-    commentsContainer.appendChild(div);
+    return div;
+}
 
-    // Trigger animation
-    requestAnimationFrame(() => {
-        div.classList.remove("new-comment");
+// =======================================================
+// Attach Delete & Edit Listeners
+// =======================================================
+function attachActionListeners() {
+    // Delete Buttons
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const commentId = btn.dataset.id;
+
+            try {
+                const res = await fetch(
+                    `https://scriptures-blog.onrender.com/api/comment/${commentId}`,
+                    {
+                        method: "DELETE",
+                        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    }
+                );
+
+                if (!res.ok) throw new Error("Delete failed");
+
+                // Remove from DOM
+                btn.closest(".comment-card").remove();
+
+                if (commentsContainer.children.length === 0) {
+                    commentsContainer.innerHTML = "<p>No comments yet.</p>";
+                }
+            } catch (err) {
+                console.error("Delete error:", err);
+                alert("Could not delete comment.");
+            }
+        });
+    });
+
+    // Edit Buttons
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const commentId = btn.dataset.id;
+            const commentCard = btn.closest(".comment-card");
+            const currentText = commentCard.querySelector("p").innerText;
+
+            const newText = prompt("Edit your comment:", currentText);
+            if (!newText || newText.trim() === "") return;
+
+            try {
+                const res = await fetch(
+                    `https://scriptures-blog.onrender.com/api/comments/${authorId}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ content: newText })
+                    }
+                );
+
+                if (!res.ok) throw new Error("Update failed");
+                commentCard.querySelector("p").innerText = newText;
+            } catch (err) {
+                console.error("Edit error:", err);
+                alert("Could not edit comment.");
+            }
+        });
     });
 }
 
-// =========================
-// Toggle Comments Visibility
-// =========================
-toggleCommentsBtn.addEventListener("click", () => {
-    const isHidden = commentsWrapper.style.display === "none";
-    commentsWrapper.style.display = isHidden ? "flex" : "none";
-    toggleCommentsBtn.textContent = isHidden ? "Hide Comments" : "Show Comments";
-});
+// =======================================================
+// Append New Comment Live
+// =======================================================
+function appendNewComment(comment) {
+    const currentUser = Number(localStorage.getItem("userId"));
+    const newEl = buildCommentElement(comment, currentUser);
+    newEl.classList.add("new-comment");
 
-// =========================
+    commentsContainer.appendChild(newEl);
+    setTimeout(() => newEl.classList.remove("new-comment"), 150);
+
+    attachActionListeners();
+}
+
+// =======================================================
 // Submit New Comment
-// =========================
+// =======================================================
 submitBtn.addEventListener("click", async () => {
     const content = commentInput.value.trim();
     if (!content) return;
@@ -118,56 +192,64 @@ submitBtn.addEventListener("click", async () => {
     try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`https://scriptures-blog.onrender.com/api/posts/${postId}/comments`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ content })
-        });
+        const res = await fetch(
+            `https://scriptures-blog.onrender.com/api/posts/${postId}/comments`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ content })
+            }
+        );
 
         if (!res.ok) throw new Error("Failed to post comment");
 
-        const { comment: newComment } = await res.json();
+        const data = await res.json();
+        appendNewComment(data.comment);
 
-        appendComment(newComment); // add instantly
         commentInput.value = "";
         commentInput.focus();
 
-    } catch (err) {
-        console.error("Error posting comment:", err);
+    } catch (error) {
+        console.error("Comment error:", error);
     }
 });
 
-// =========================
+// =======================================================
+// Toggle Comments Panel
+// =======================================================
+toggleCommentsBtn.addEventListener("click", () => {
+    const hidden = commentsWrapper.style.display === "none";
+    commentsWrapper.style.display = hidden ? "block" : "none";
+    toggleCommentsBtn.textContent = hidden ? "Hide Comments" : "Show Comments";
+});
+
+// =======================================================
 // Theme Toggle
-// =========================
+// =======================================================
 themeBtn.addEventListener("click", () => {
     const html = document.documentElement;
-    const theme = html.getAttribute("data-theme");
+    const current = html.getAttribute("data-theme");
 
-    if (theme === "light") {
-        html.setAttribute("data-theme", "dark");
-        themeBtn.textContent = "☀️";
-        localStorage.setItem("theme", "dark");
-    } else {
-        html.setAttribute("data-theme", "light");
-        themeBtn.textContent = "🌙";
-        localStorage.setItem("theme", "light");
-    }
+    const newTheme = current === "light" ? "dark" : "light";
+    html.setAttribute("data-theme", newTheme);
+    themeBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+
+    localStorage.setItem("theme", newTheme);
 });
 
-// Apply saved theme on load
-(function applySavedTheme() {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-        themeBtn.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+// Load stored theme
+(function applyTheme() {
+    const saved = localStorage.getItem("theme");
+    if (saved) {
+        document.documentElement.setAttribute("data-theme", saved);
+        themeBtn.textContent = saved === "dark" ? "☀️" : "🌙";
     }
 })();
 
-// =========================
-// Load post + comments on page load
-// =========================
+// =======================================================
+// Initialize Page
+// =======================================================
 loadPost();

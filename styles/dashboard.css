@@ -121,7 +121,7 @@ button:hover {
 .fa-facebook:hover, .fa-twitter:hover, .fa-instagram:hover {
     transform: scale(1.15);
 }
-@media  (max-width:675px) {
+@media  (max-width:740px) {
     
     .username h1, .username p {
         text-align: center;
@@ -130,9 +130,11 @@ button:hover {
         width: 80%;
     }
     .actions {
+        display: flex;
        
         align-items: center;
         justify-content: center;
+
     }
     .blog-image img {
         width: 90%;
