@@ -7,20 +7,27 @@
     <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
+    <div class="show-popup">
+        <div class="popup-content">
+            <span class="popup-close">&times;</span>
+            <p class="popup-message"></p>
+        </div>
+    </div>
 
     <div class="container">
         <div class="header">
             <h1>Welcome Back</h1>
             <p>Please log in to continue</p>
         </div>
+
         
         <form id="login-form">
-            <span class="generalError"></span>
+            <span class="generalErrors" id="generalErrors"></span>
             <div class="form-group">
                 <label for="email">Email</label><br>
                 <input type="email" id="email" name="email" required>
                 <span class="error emailError"></span>
-                 <span class="error emailError"></span>
+                <span class="error emailError"></span>
             </div>
 
             <div class="form-group password-wrapper">

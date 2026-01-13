@@ -4,8 +4,38 @@ const passwordInput = document.getElementById("password");
 
 const emailError = document.querySelector(".emailError");
 const passwordError = document.querySelector(".passwordError");
-
+const generalError = document.querySelector(".generalErrors");
+const newError = document.getElementById("generalErrors");
+const popupOverlay = document.querySelector(".show-popup");
 const togglePassword = document.getElementById("togglePassword");
+// const generalError = document.querySelector(".generalError");
+const showPopup = document.querySelector(".show-popup");
+const popupClose = document.querySelector(".popup-close");
+const popupMessage = document.querySelector(".popup-message");
+
+
+popupClose.addEventListener("click", () => {
+  popupOverlay.style.display = "none";
+});
+
+// Close popup when clicking outside popup-content
+popupOverlay.addEventListener("click", (e) => {
+  if (e.target === popupOverlay) popupOverlay.style.display = "none";
+});
+
+
+function showPopupMessage(message, options = {}) {
+  popupMessage.textContent = message;
+  popupOverlay.style.display = "flex";
+
+  if (options.autoCloseMs) {
+    setTimeout(() => (popupOverlay.style.display = "none"), options.autoCloseMs);
+  }
+  if (options.redirectUrl) {
+    setTimeout(() => { window.location.replace(options.redirectUrl); }, options.redirectDelayMs || 1200);
+  }
+}
+// TOGGLE PASSWORD VISIBILITY
 
 togglePassword.addEventListener("click", () => {
     if (passwordInput.type === "password") {
@@ -85,13 +115,14 @@ form.addEventListener('submit', async (e) => {
           return;
         }
     
-        
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user.username));
-        window.location.replace("dashboard.html");
+        showPopupMessage(data.message, { autoCloseMs: 1500, redirectUrl: "dashboard.html", redirectDelayMs: 1200 });
+        localStorage.setItem("token", data.accessToken);
+        // localStorage.setItem("user", JSON.stringify(data.user.username));
+        // console.log(data);
+        // window.location.replace("dashboard.html");
     
       } catch (err) {
-        generalError.textContent = "Network error. Try again.";
+        newError.textContent = "Network error. Try again.";
         console.error(err);
       }
 })
