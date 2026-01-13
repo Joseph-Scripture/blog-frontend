@@ -93,8 +93,8 @@ input:focus {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
-    color: #faa7a7;
+    background-color: #0056b3;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-size: 1.15rem;
@@ -104,7 +104,7 @@ button {
 }
 
 button:hover {
-    background-color: #0069d9;
+    background-color: #004494;
 }
 
 /* Signup text */
